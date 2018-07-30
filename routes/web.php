@@ -11,10 +11,9 @@
 |
 */
 
+Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index')->name('home');
 Route::get('/myblog', 'UsersController@index');
 Route::get('/myblog/delete/{id}', 'ContentsController@subjectDelete');
 Route::get('/myblog/edit/{id}', 'ContentsController@subjectEdit');
