@@ -12,9 +12,9 @@
             </ul>
             @else
             <ul>
-                <li><a href="#">Profile</a></li>
+                <li><a href="{!! url('profile') !!}">Profile</a></li>
                 <li><a href="{!! url('myblog') !!}">{{ Auth::user()->name }}</a></li>
-                <li><a href="#">New Blog</a></li>
+                <li><a href="{!! url('newblog') !!}">New Blog</a></li>
             </ul>
             @endguest
         </nav>

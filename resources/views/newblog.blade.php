@@ -82,41 +82,6 @@
                     </ul>
                 </section>
         </section>
-        @foreach ($sub as $subs)
-        <form class="form-horizontal" method="POST" action="{{ url('/myblog/edit') }}" enctype="multipart/form-data">
-            <input type='hidden' value="{!! csrf_token() !!}" name='_token' />
-            <article class="post">
-                <header>
-                    <div class="12u$ title">
-                        <h2>Subject</h2>
-                        <input type="text" name="subject" id="subject" value="{{ $subs->subject }}" placeholder="Subject">
-                    </div>
-                </header>
-                @if ($subs->url != NULL)
-                <a href="#" class="image featured"><img src="{{ '../../images/' . $subs->url }}" alt="" /></a>
-                @endif
-                <p style="margin-bottom: 1px;margin-top:-30px;">Update picture</p>
-                <input type="file" name="file" id="file"/>
-                <div class="form-group user-info-detail" style="display: none">
-                    <label for="id" class="col-md-4 control-label">ID</label>
-                    <div class="col-md-6">
-                        <input id="id" type="number" class="form-control" name="id" value="{{ $subs->id }}">
-                    </div>
-                </div>
-                <div class="12u$">
-                    <textarea name="content" id="content" placeholder="Enter your message" rows="6">{{ $subs->content }}</textarea>
-                </div>
-                <p>  </p>
-                <footer>
-                    <ul class="actions">
-                        <li>
-                            <input type="submit" value="Edit">
-                        </li>                 
-                    </ul>
-                </footer>
-            </article>
-        </form>
-        @endforeach
 
         <section id="footer">
             <ul class="icons">

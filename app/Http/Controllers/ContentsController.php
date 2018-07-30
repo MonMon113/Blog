@@ -34,4 +34,8 @@ class ContentsController extends Controller
         }
         return redirect('/myblog');
     }
+
+    public function subjectNew(){
+        return view('/newblog');
+    }
 }
