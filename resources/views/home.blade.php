@@ -2,7 +2,11 @@
 
 @section('content')
     <div id="wrapper">
-
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
         <!-- Header -->
         <header id="header">
             <h1><a href="{!! url('home') !!}">My Blog</a></h1>
@@ -39,48 +43,32 @@
         <section id="menu">
 
             <!-- Search -->
-            <section>
-                <form class="search" method="get" action="#">
-                    <input type="text" name="query" placeholder="Search" />
-                </form>
-            </section>
-
-            <!-- Links -->
-            <section>
-                <ul class="links">
-                    <li>
-                        <a href="#">
-                            <h3>Lorem ipsum</h3>
-                            <p>Feugiat tempus veroeros dolor</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <h3>Dolor sit amet</h3>
-                            <p>Sed vitae justo condimentum</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <h3>Feugiat veroeros</h3>
-                            <p>Phasellus sed ultricies mi congue</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <h3>Etiam sed consequat</h3>
-                            <p>Porta lectus amet ultricies</p>
-                        </a>
-                    </li>
-                </ul>
-            </section>
+                <section>
+                    <form class="search" method="get" action="#">
+                        <input type="text" name="query" placeholder="Search" />
+                    </form>
+                </section>
 
             <!-- Actions -->
-            <section>
-                <ul class="actions vertical">
-                    <li><a href="#" class="button big fit">Log In</a></li>
-                </ul>
-            </section>
+                <section>
+                    @guest
+                    <ul class="actions vertical">
+                        <li><a href="{{ route('login') }}" class="button big fit">Log In</a></li>
+                    </ul>
+                    @else
+                    <ul class="actions vertical">
+                        <li>
+                            <a class="dropdown-item button big fit" href="#" onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                            {{__("Logout")}}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                        </li>
+                    </ul>
+                    @endguest
+                </section>
         </section>
 
         <!-- Main -->
@@ -101,7 +89,12 @@
                 @if ($content->url != NULL)
                 <a href="#" class="image featured"><img src="{{ 'images/' . $content->url }}" alt="" /></a>
                 @endif
-                <p>{{ $content->content }}</p>
+                <p>
+                    {{ str_limit(strip_tags($content->content), 50) }}
+                    @if (strlen(strip_tags($content->content)) > 50)
+                      <a href="{{ url('/seemore/' . $content->id) }}" class="btn btn-info btn-sm"><p>Read More<p></a>
+                    @endif
+                </p>
                 <footer>
                 </footer>
             </article>
@@ -132,7 +125,7 @@
                             <a href="#" class="author"><img src="{{ 'images/' . $content->usersUrl }}" alt="" /></a>
                         </header>
                         @if ($content->url != NULL)
-                            <a href="#" class="image featured"><img src="{{ 'images/' . $content->url }}" alt="" /></a>
+                            <a href="#" class="image"><img src="{{ 'images/' . $content->url }}" alt="" /></a>
                         @endif
                     </article>
                     @endforeach

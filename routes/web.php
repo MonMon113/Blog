@@ -21,4 +21,6 @@ Route::post('/profile/update', 'UsersController@update');
 Route::get('/myblog/delete/{id}', 'ContentsController@subjectDelete');
 Route::get('/myblog/edit/{id}', 'ContentsController@subjectEdit');
 Route::post('/myblog/edit', 'ContentsController@contentEdit');
-Route::get('/newblog', 'ContentsController@subjectNew');
+Route::get('/newblog', 'ContentsController@newblog');
+Route::post('/newblog/add', 'ContentsController@add');
+Route::get('/seemore/{id}', 'ContentsController@detail');

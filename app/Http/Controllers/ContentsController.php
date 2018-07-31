@@ -25,7 +25,9 @@ class ContentsController extends Controller
 
     public function contentEdit(Request $request){
         Content::where('id', $request->id)
-            ->update(['subject' => $request->subject], ['content' => $request->content]);
+            ->update(['subject' => $request->subject]);
+        Content::where('id', $request->id)
+        ->update(['content' => $request->content]);
         if($request->hasFile('file')){
             $file = $request->file('file');
             $file->move('images', $file->getClientOriginalName());
@@ -35,7 +37,32 @@ class ContentsController extends Controller
         return redirect('/myblog');
     }
 
-    public function subjectNew(){
+    public function newblog(){
         return view('/newblog');
+    }
+
+    public function add(Request $request){
+        $content = new Content;
+        $content->subject = $request->subject;
+        $content->content = $request->content;
+        $content->user_id = Auth::id();
+        if($request->hasFile('file')){
+            $file = $request->file('file');
+            $file->move('images', $file->getClientOriginalName());
+            $content->url = $file->getClientOriginalName();
+        }
+        $content->save();
+        return redirect('/myblog');
+    }
+
+    public function detail($content_id){
+        $content = Content::join('users', 'users.id', '=', 'user_id')
+                ->where('contents.id', '=', $content_id)
+                ->select('contents.*', 'users.name', 'users.url as usersUrl')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        return view('detail', ([
+            'content' => $content
+        ]));
     }
 }
