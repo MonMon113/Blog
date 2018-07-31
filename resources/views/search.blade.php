@@ -2,13 +2,13 @@
 
 @section('content')
 <body class="single">
-    <div id="wrapper">
+	<div id="wrapper">
         @if (session('status'))
             <div class="alert alert-success" role="alert">
                 {{ session('status') }}
             </div>
         @endif
-        <header id="header">
+		<header id="header">
             <h1><a href="{!! url('home') !!}">My Blog</a></h1>
             <nav class="links">
                 @guest
@@ -39,8 +39,8 @@
             </nav>
         </header>
 
-        <!-- Menu -->
-        <section id="menu">
+		<!-- Menu -->
+		<section id="menu">
 
             <!-- Search -->
                 <section>
@@ -69,54 +69,57 @@
                     </ul>
                     @endguest
                 </section>
-        </section>
-        
-        <div class="main">
-            @foreach ($content as $cont)
+        </section>	
+
+		<div id="main">
+
+            @foreach  ($contents as $content)
             <article class="post">
                 <header>
                     <div class="title">
-                        <h2><a id = "{{$cont->id}}" href="#">{{ $cont->subject }}</a></h2>
+                        <h2><a id = "{{$content->id}}" href="#">{{ $content->subject }}</a></h2>
                         
                     </div>
                     <div class="meta">
-                        <time class="published">{{ date('F d, Y', strtotime($cont->created_at)) }}</time>
-                        <a href="#" class="author"><span class="name">{{ $cont->name }}</span><img src="{{ 'images/' . $cont->usersUrl }}" alt="" /></a>
+                        <time class="published">{{ date('F d, Y', strtotime($content->created_at)) }}</time>
+                        <a href="#" class="author"><span class="name">{{ $content->name }}</span><img src="{{ 'images/' . $content->usersUrl }}" alt="" /></a>
                     </div>
                 </header>
-                @if ($cont->url != NULL)
-                <a href="#" class="image featured"><img src="{{ '../images/' . $cont->url }}" alt="" /></a>
+                @if ($content->url != NULL)
+                <a href="#" class="image featured"><img src="{{ 'images/' . $content->url }}" alt="" /></a>
                 @endif
                 <p>
-                    {{ $cont->content }}
+                    {{ str_limit(strip_tags($content->content), 50) }}
+                    @if (strlen(strip_tags($content->content)) > 50)
+                      <a href="{{ url('/seemore/' . $content->id) }}" class="btn btn-info btn-sm"><p>Read More<p></a>
+                    @endif
                 </p>
-                @if ($cont->user_id == Auth::id())
                 <footer>
                     <ul class="actions">
                             <li>
-                                <a href="{{ url('myblog/edit/' . $cont->id) }}" class="button fit">Edit</a>
+                                <a href="{{ url('myblog/edit/' . $content->id) }}" class="button fit">Edit</a>
                             </li>
                             <li>
-                                <a onclick="return confirm('Are you sure?')" href="{{ url('myblog/delete/' . $cont->id) }}" class="button fit">Delete</a> 
+                                <a onclick="return confirm('Are you sure?')" href="{{ url('myblog/delete/' . $content->id) }}" class="button fit">Delete</a> 
                             </li>                   
                     </ul>
                 </footer>
-                @endif
             </article>
             @endforeach
+            {{ $contents->links() }}
         </div>
+        
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="fa-rss"><span class="label">RSS</span></a></li>
+				<li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+		</section>
 
-        <section id="footer">
-            <ul class="icons">
-                <li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="fa-rss"><span class="label">RSS</span></a></li>
-                <li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li>
-            </ul>
-            <p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>
-        </section>
-
-    </div>
+	</div>
 </body>
 @endsection

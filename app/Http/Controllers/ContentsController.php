@@ -65,4 +65,16 @@ class ContentsController extends Controller
             'content' => $content
         ]));
     }
+
+    public function search(Request $request){
+        $contents = Content::join('users', 'users.id', '=', 'user_id')
+                ->where('contents.subject', 'like', '%' . $request->search . '%')
+                ->orWhere('contents.content', 'like', '%' . $request->search . '%')
+                ->select('contents.*', 'users.name', 'users.url as usersUrl')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        return view('search', ([
+            'contents' => $contents
+        ]));
+    }
 }

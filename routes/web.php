@@ -24,3 +24,4 @@ Route::post('/myblog/edit', 'ContentsController@contentEdit');
 Route::get('/newblog', 'ContentsController@newblog');
 Route::post('/newblog/add', 'ContentsController@add');
 Route::get('/seemore/{id}', 'ContentsController@detail');
+Route::get('/search', 'ContentsController@search');
